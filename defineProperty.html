@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <div id="name"></div>
+  </div>
+  <button id="btn">修改数据驱动视图</button>
+
+  <script>
+    const btn = document.querySelector("#btn");
+    const obj = {
+      name: 'Jerry'
+    }
+    //  Object.defineProperty方法接收三参   
+    // 1.修改的对象
+    // 2.修改对象的属性名
+    // 3.descriptor  要定义或修改的属性描述符  ，此处又get 和  set属性，当通过.形式获取则会调用get  通过.修改的话则
+    Object.defineProperty(obj, 'name', {
+      get: function () {
+        return obj.name;
+      },
+      set: function (val) {
+        document.querySelector("#name").innerHTML = val
+      }
+    });
+
+    btn.addEventListener("click", (e) => {
+      obj.name = 'Tom';
+    })
+    //此时obj.  的形式修改了obj中属性时，就会调用Object.defineProperty方法中的  set函数，从而将视图层更改
+    // 这也是为什么vue 通过点的形式修改数据，使得视图也做出响应的原因
+
+  </script>
+</body>
+
+</html>

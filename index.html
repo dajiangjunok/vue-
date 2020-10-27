@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 插值绑定 -->
+    <p>{{name}}</p>
+    <!-- 指令解析 -->
+    <p j-text="name"></p>
+    <p>{{age}}</p>
+    <p>
+      {{doubleAge}}
+    </p>
+    <!-- 双向绑定 -->
+    <input type="text" j-model="name" />
+    <!-- 事件处理 -->
+    <button @click="changeName">呵呵</button>
+    <!-- html 内容解析 -->
+    <div j-html="html"></div>
+  </div>
+
+  <script src="./compile.js"></script>
+  <script src="./jvue.js"></script>
+  <script>
+    const app = new JVue({
+      el: '#app',
+      data: {
+        name: 'I am Jerry',
+        age: 18,
+        html: "<button>这是一个按钮</button>",
+        doubleAge: 36
+      },
+      created() {
+        console.log('开始啦');
+        setTimeout(() => {
+          this.name = "我是测试"
+        }, 1500)
+      },
+      methods: {
+        changeName() {
+          this.name = "哈喽，codeWang";
+          this.age = 25;
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
