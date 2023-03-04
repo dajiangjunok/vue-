@@ -20,18 +20,18 @@
   */
   class Vue {
     constructor() {
-      this.$events = {}
+      this._sub = {}
     }
 
     $emit(eventName, payload) {
       // 发布者就是将新的内容等告知信息中心，先要找到信息中心要改的内容
-      const callback = this.$events[eventName]
+      const callback = this._sub[eventName]
       callback(payload)
     }
 
     $on(eventName, callback) {
       // 订阅的目的就是把，我要订阅东西，做什么事情放入$evnets对象(信息中心)
-      this.$events[eventName] = callback
+      this._sub[eventName] = callback
     }
   }
 
