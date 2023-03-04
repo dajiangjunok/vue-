@@ -17,8 +17,8 @@ class Compile {
     }
   }
 
-  // 作用：将宿主元素中代码片段拿出来便利，这样做比较高效果
-  node2Fragment (el) {
+  // 作用：将宿主元素中代码片段拿出来遍历，这样做比较高效果
+  node2Fragment(el) {
     const frag = document.createDocumentFragment();
     // 将el中所有子元素搬家至frag中
     let child;
@@ -29,7 +29,7 @@ class Compile {
   }
 
   // 编译
-  compile (el) {
+  compile(el) {
     const childNodes = el.childNodes;
     // console.log(childNodes);
     Array.from(childNodes).forEach(node => {
@@ -67,14 +67,14 @@ class Compile {
       }
     })
   }
-  compileText (node) {
+  compileText(node) {
     // 走到这说明是一个插值表达式
     // console.log(RegExp.$1);
     this.update(node, this.$vm, RegExp.$1, 'text')
   }
 
   // 更新函数
-  update (node, vm, exp, dir) {
+  update(node, vm, exp, dir) {
     const updaterFn = this[dir + 'Updater'];
     // 初始化
     updaterFn && updaterFn(node, vm[exp]);
@@ -84,12 +84,12 @@ class Compile {
     })
   }
 
-  text (node, vm, exp) {
+  text(node, vm, exp) {
     this.update(node, vm, exp, 'text')
   }
 
   // 双向数据绑定
-  model (node, vm, exp) {
+  model(node, vm, exp) {
     // 要指定input 的value属性 
     this.update(node, vm, exp, "model");
 
@@ -99,24 +99,24 @@ class Compile {
     })
   }
 
-  modelUpdater (node, value) {
+  modelUpdater(node, value) {
     node.value = value;
   }
 
-  html (node, vm, exp) {
+  html(node, vm, exp) {
     this.update(node, vm, exp, "html")
   }
 
-  htmlUpdater (node, value) {
+  htmlUpdater(node, value) {
     node.innerHTML = value;
   }
 
-  textUpdater (node, value) {
+  textUpdater(node, value) {
     node.textContent = value;
   }
 
   // 事件处理器
-  eventHandle (node, vm, exp, dir) {
+  eventHandle(node, vm, exp, dir) {
     // @click="onclick"
     let fn = vm.$options.methods && vm.$options.methods[exp];
     if (dir && fn) {
@@ -124,20 +124,20 @@ class Compile {
     }
   }
 
-  isDirective (attrName) {
+  isDirective(attrName) {
     return attrName.indexOf('j-') === 0;
   }
 
-  isEvent (attrName) {
+  isEvent(attrName) {
     return attrName.indexOf('@') === 0;
   }
 
-  isElement (node) {
+  isElement(node) {
     return node.nodeType === 1;
   }
 
   // 插值文本
-  isInterpolation (node) {
+  isInterpolation(node) {
     return node.nodeType === 3 && /\{\{(.*)\}\}/.test(node.textContent);
   }
 }

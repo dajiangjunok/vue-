@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03.发布订阅</title>
+</head>
+
+<body>
+  <button id="btn">发布者</button>
+</body>
+<script>
+  /**
+   * 发布订阅：首先确定 发布者 ， 信号中心 ， 订阅者
+   * 类似：作者(发布者)写一个工具都github(信息中心)，github 可以处理这个工具然后将它推上热门，
+   * 来自全世界的coder(订阅者)就可以看到这个工具，并收藏
+   * vue中的例子： EventBus  $on  $emit
+  */
+  class Vue {
+    constructor() {
+      this.$events = {}
+    }
+
+    $emit(eventName, payload) {
+      // 发布者就是将新的内容等告知信息中心，先要找到信息中心要改的内容
+      const callback = this.$events[eventName]
+      callback(payload)
+    }
+
+    $on(eventName, callback) {
+      // 订阅的目的就是把，我要订阅东西，做什么事情放入$evnets对象(信息中心)
+      this.$events[eventName] = callback
+    }
+  }
+
+  const vm = new Vue()
+  let count = 0
+  vm.$on('change', (payload) => {
+    console.log(payload);
+  })
+
+  const btn = document.getElementById('btn')
+  btn.onclick = () => {
+    count++
+    vm.$emit('change', count)
+  }
+</script>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01.defineProperty</title>
+</head>
+
+<body>
+  <h4 id="name"></h4>
+  <h4 id="age"></h4>
+  <h4 id="gender"></h4>
+
+  <input id="nameInput" type="text" />
+  <button id="ageBtn">age</button>
+  <button id="genderBtn">gender</button>
+</body>
+<script>
+  const nameEl = document.getElementById('name')
+  const ageEl = document.getElementById('age')
+  const genderEl = document.getElementById('gender')
+
+  const inputEl = document.getElementById('nameInput')
+  const ageBtn = document.getElementById('ageBtn')
+  const genderBtn = document.getElementById('genderBtn')
+
+  const obj = {
+    name: 'Jerry',
+    age: 18,
+    gender: '男'
+  }
+  const vm = {}
+
+  Object.keys(obj).forEach(key => {
+    Object.defineProperty(vm, key, {
+      // 可枚举
+      enumerable: true,
+      // 可配置
+      configurable: true,
+      get() {
+        return obj[key]
+      },
+      set(newVal) {
+        if (newVal === obj[key]) return
+        obj[key] = newVal
+        document.getElementById(key).innerHTML = obj[key]
+        // nameEl.innerHTML = `name： ${obj[key]}`
+      }
+    })
+  })
+
+
+
+  inputEl.addEventListener('input', e => {
+    const val = e.target.value
+    vm.name = val
+  })
+
+  ageBtn.onclick = () => {
+    vm.age = 88
+  }
+
+  genderBtn.onclick = () => {
+    vm.gender = '女'
+  }
+
+</script>
+
+</html>
