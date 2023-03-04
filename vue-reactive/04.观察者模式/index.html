@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04.观察者模式</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <button id="add">添加观察者</button>
+  <button id="empty">清空观察者</button>
+  <button id="handle">触发</button>
+</body>
+<script>
+  /**
+   * 与发布订阅者不同 观察者中 发布者和订阅者(观察者)是相互依赖的 必须要求观察者订阅内容改变事件 ，而发布订阅者是由调度中心进行调度 
+   * 1.一个目标类，有一个存储观察者的集合，有添加观察者的方法，有通知观察者的方法，有清空观察者的方法
+   * 2.生成观察者的类，类中含有观察者调度方法 
+  **/
+
+  class Subject {
+    constructor() {
+      this.observerList = []
+    }
+
+    addObserver(observer) {
+      this.observerList.push(observer)
+    }
+
+    notify() {
+      this.observerList.forEach(observer => {
+        observer.update()
+      })
+    }
+
+    empty() {
+      this.observerList = []
+    }
+  }
+
+  class Observer {
+    update() {
+      console.log('观察者被触发');
+    }
+  }
+
+  const sub = new Subject()
+
+  const addEl = document.getElementById('add')
+  const emptyEl = document.getElementById('empty')
+  const handleEl = document.getElementById('handle')
+
+  addEl.onclick = () => {
+    sub.addObserver(new Observer())
+  }
+
+  emptyEl.onclick = () => {
+    sub.empty()
+  }
+
+  handleEl.onclick = () => {
+    console.log(sub.observerList);
+    sub.notify()
+  }
+</script>
+
+</html>

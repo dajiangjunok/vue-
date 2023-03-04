@@ -9,6 +9,7 @@
 </head>
 
 <body>
+  <div id="app"></div>
   <button id="btn">发布者</button>
 </body>
 <script>
@@ -37,8 +38,11 @@
 
   const vm = new Vue()
   let count = 0
+  const appEl = document.getElementById('app')
+
   vm.$on('change', (payload) => {
-    console.log(payload);
+    appEl.innerHTML = payload
+    // console.log(payload);
   })
 
   const btn = document.getElementById('btn')
