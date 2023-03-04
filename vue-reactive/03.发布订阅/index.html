@@ -10,6 +10,7 @@
 
 <body>
   <div id="app"></div>
+  <div id="app2"></div>
   <button id="btn">发布者</button>
 </body>
 <script>
@@ -26,22 +27,33 @@
 
     $emit(eventName, payload) {
       // 发布者就是将新的内容等告知信息中心，先要找到信息中心要改的内容
-      const callback = this._sub[eventName]
-      callback(payload)
+      const callbacks = this._sub[eventName]
+      callbacks?.forEach(fn => {
+        fn(payload)
+      })
     }
 
     $on(eventName, callback) {
       // 订阅的目的就是把，我要订阅东西，做什么事情放入$evnets对象(信息中心)
-      this._sub[eventName] = callback
+      if (!this._sub[eventName]) {
+        this._sub[eventName] = []
+      }
+      this._sub[eventName].push(callback)
     }
   }
 
   const vm = new Vue()
   let count = 0
   const appEl = document.getElementById('app')
+  const appEl2 = document.getElementById('app2')
 
   vm.$on('change', (payload) => {
     appEl.innerHTML = payload
+    // console.log(payload);
+  })
+
+  vm.$on('change', (payload) => {
+    appEl2.innerHTML = payload
     // console.log(payload);
   })
 
